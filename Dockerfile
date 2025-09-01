@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Fayllarni nusxalash
 COPY package*.json ./
-RUN npm install --production
+RUN npm install
 
 # Loyihani nusxalash
 COPY . .
