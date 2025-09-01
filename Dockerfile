@@ -1,26 +1,21 @@
-# Stage 1: build
-FROM node:18-alpine AS builder
-
-WORKDIR /app
-
-COPY backend/package*.json ./
-RUN npm install
-
-COPY backend ./
-
-RUN npm run build
-
-
-# Stage 2: production
+# Node.js bazasi
 FROM node:18-alpine
 
+# Ishchi katalog
 WORKDIR /app
 
-COPY backend/package*.json ./
+# Fayllarni nusxalash
+COPY package*.json ./
 RUN npm install --production
 
-# faqat dist ni olib kelamiz
-COPY --from=builder /app/dist ./dist
+# Loyihani nusxalash
+COPY . .
 
+# Loyihani qurish
+RUN npm run build
+
+# Port ochish (Render process.env.PORT ni beradi)
 EXPOSE 3000
-CMD ["node", "dist/main.js"]
+
+# NestJSni production rejimda ishga tushirish
+CMD ["npm", "run", "start:prod"]
